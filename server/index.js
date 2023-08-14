@@ -3,6 +3,8 @@ const app = express();
 const mongoose = require("mongoose");
 const UserModel = require("./models/Users");
 
+app.use(express.json());
+
 mongoose.connect(
   "mongodb+srv://moancea:pass123@cluster0.ngasa6d.mongodb.net/merntutorial?retryWrites=true&w=majority"
 );
@@ -17,6 +19,14 @@ app.get("/getUsers", async (req, res) => {
     res.send(err);
     console.log(err);
   }
+});
+
+app.post("/createUser", async (req, res) => {
+  const user = req.body;
+  const newUser = new UserModel(user);
+  await newUser.save();
+
+  res.json(user);
 });
 
 app.listen(3001, () => {
