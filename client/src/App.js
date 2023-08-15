@@ -32,15 +32,30 @@ function App() {
     });
   };
 
+  const handleDeleteUser = (selectedUser) => {
+    const removedUser = users.filter((user) => user._id !== selectedUser._id);
+
+    axios
+      .delete(`http://localhost:3001/deleteUser/${selectedUser._id}`)
+      .then((response) => {
+        console.log(response.data);
+        setUsers(removedUser);
+      })
+      .catch((error) => {
+        console.error("Error deleting user:", error);
+      });
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         {users.map((user) => {
           return (
-            <div key={user.age}>
+            <div key={user._id}>
               <p>Name: {user.name}</p>
               <p>Age: {user.age}</p>
               <p>Username: {user.username}</p>
+              <button onClick={() => handleDeleteUser(user)}>Delete</button>
             </div>
           );
         })}

@@ -32,6 +32,21 @@ app.post("/createUser", async (req, res) => {
   res.json(user);
 });
 
+app.delete("/deleteUser/:id", async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const deletedUser = await UserModel.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).json("User not found");
+    }
+
+    res.json("User deleted");
+  } catch (err) {
+    res.status(500).json("Internal error");
+  }
+});
+
 app.listen(3001, () => {
   console.log("SERVER RUNNING");
 });
